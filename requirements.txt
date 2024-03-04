@@ -8,8 +8,6 @@ faiss-cpu
 langchain_google_genai
 googletrans
 google-cloud-translate
-pathlib
-textwrap
 pillow
 pyttsx3
 speech_recognition
