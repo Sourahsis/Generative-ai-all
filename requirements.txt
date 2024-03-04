@@ -10,5 +10,5 @@ googletrans
 google-cloud-translate
 pillow
 pyttsx3
-speech_recognition
+SpeechRecognition
 langdetect
