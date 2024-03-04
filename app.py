@@ -14,6 +14,7 @@ from langdetect import detect
 from PIL import Image
 import speech_recognition as sr
 import google.generativeai as palm
+from deep_translator import GoogleTranslator
 import pyttsx3 
 translator = Translator()
 load_dotenv()
@@ -80,7 +81,7 @@ def user_input(user_question,language):
         {"input_documents":docs, "question": user_question}
         , return_only_outputs=True)
     response=str(response["output_text"])
-    response=translator.translate(response, dest=language).text
+    response=GoogleTranslator(target=language).translate(response)
     print(response)
     st.write("Rahu: ", response)
 
@@ -94,7 +95,7 @@ def chat_with_pdf():
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
-        user_question=translator.translate(user_question, dest='en').text
+        user_question=GoogleTranslator(target=language).translate(user_question)
     if user_question:
         user_input(user_question,language)
     with st.sidebar:
@@ -139,12 +140,11 @@ def input_image_setup(uploaded_file):
 
 def chat_with_image():
     st.header("chat in any language , and the response will give in that language")
-    input=None
     input=st.text_input("Input Prompt: ",key="input")
     if(input):
         input = str(input) 
         language=detect_language_code(input)
-        input=translator.translate(input, dest='en').text
+        input=GoogleTranslator(target=language).translate(input)
     submit=st.button("submit")
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
     image=""   
@@ -165,7 +165,7 @@ def chat_with_image():
         if(input):
             image_data = input_image_setup(uploaded_file)
             response=get_gemini_response(input_prompt,image_data,input)
-            response=translator.translate(response, dest=language).text
+            response=GoogleTranslator(target=language).translate(response)
             st.subheader("The Response is")
             st.write(response)
         else:
@@ -193,7 +193,7 @@ def chatbot():
     if(input):
         input = str(input) 
         language=detect_language_code(input)
-        input=translator.translate(input, dest='en').text
+        input=GoogleTranslator(target=language).translate(input)
 
     submit=st.button("Ask the question")
     if submit and input:
@@ -202,8 +202,8 @@ def chatbot():
         st.session_state['chat_history'].append(("You", input1))
         st.subheader("The Response is")
         for chunk in response:
-            st.write(translator.translate(chunk.text, dest=language).text)
-            st.session_state['chat_history'].append(("Bot", translator.translate(chunk.text, dest=language).text))
+            st.write(GoogleTranslator(target=language).translate(chunk.text))
+            st.session_state['chat_history'].append(("Bot", GoogleTranslator(target=language).translate(chunk.text)))
     st.subheader("The Chat History is")
         
     for role, text in st.session_state['chat_history']:
