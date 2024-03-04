@@ -139,6 +139,7 @@ def input_image_setup(uploaded_file):
 
 def chat_with_image():
     st.header("chat in any language , and the response will give in that language")
+    input=None
     input=st.text_input("Input Prompt: ",key="input")
     if(input):
         input = str(input) 
