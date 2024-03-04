@@ -6,7 +6,7 @@ PyPDF2
 chromadb
 faiss-cpu
 langchain_google_genai
-deep-translator
+--upgrade googletrans
 google-cloud-translate
 pillow
 pyttsx3
