@@ -14,7 +14,7 @@ from langdetect import detect
 from PIL import Image
 import speech_recognition as sr
 import google.generativeai as palm
-from deep_translator import GoogleTranslator
+from deep-translator import GoogleTranslator
 import pyttsx3 
 translator = Translator()
 load_dotenv()
