@@ -13,7 +13,6 @@ from googletrans import Translator
 from langdetect import detect
 from PIL import Image
 import speech_recognition as sr
-import google.generativeai as palm
 translator = Translator()
 load_dotenv()
 apikey="AIzaSyCw9UHFLxolOl9fEBLnwFedqMBC6Sj8nPk"
@@ -137,29 +136,19 @@ def input_image_setup(uploaded_file):
 
 
 def chat_with_image():
-    st.header("Chat in any language, and the response will be given in that language")
-
-    input_prompt = st.text_input("Input Prompt: ", key="input")
-    submit = st.button("Submit")
-
-    if submit and input_prompt:
-        try:
-            translator = Translator()
-            translation: Translated = translator.translate(input_prompt, dest='en')
-            translated_text = translation.text  # Access translated text safely
-
-            # Process the translated text (e.g., generate a response)
-            st.write("Response: {}".format(translated_text))
-
-        except Exception as e:
-            st.error("Translation failed: {}".format(str(e)))
-
-    # Image upload section (unchanged for brevity)
+    st.header("chat in any language , and the response will give in that language")
+    input=st.text_input("Input Prompt: ",key="input")
+    if(input):
+        input = str(input) 
+        language=detect_language_code(input)
+        input=translator.translate(input, dest='en').text
+    submit=st.button("submit")
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-    image = ""
+    image=""   
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption="Uploaded Image.", use_column_width=True)
+
 
 
     input_prompt = """
