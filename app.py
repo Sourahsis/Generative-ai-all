@@ -87,8 +87,8 @@ def detect_language_code(text):
    return language
 
 def chat_with_pdf():
-    st.header("Ask a Question from the PDF Files in eny language")
-    user_question = st.text_input("Ask a Question")
+    st.header("Ask  Question from the PDF Files in any language")
+    user_question = st.text_input("Ask  Question and before that click on the arrow or go to the menu section to upload pdf")
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
@@ -136,7 +136,7 @@ def input_image_setup(uploaded_file):
 
 
 def chat_with_image():
-    st.header("chat in any language , and the response will give in that language")
+    st.header("chat in any language , and the response will be in that language")
     input=st.text_input("Input Prompt: ",key="input")
     if(input):
         input = str(input) 
@@ -179,8 +179,8 @@ def chatbot():
     ##initialize our streamlit app
 
 
-    st.header("Chatbot Application")
-    st.write("you can write in any language you want and the bot will response int those language")
+    st.header("Chatbot")
+    st.write("you can ask in any language you want and i will response in that language")
     # Initialize session state for chat history if it doesn't exist
     if 'chat_history' not in st.session_state:
         st.session_state['chat_history'] = []
