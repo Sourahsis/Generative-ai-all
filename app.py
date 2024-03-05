@@ -14,7 +14,8 @@ from langdetect import detect
 from PIL import Image
 import speech_recognition as sr
 import google.generativeai as palm
-translator = Translator()
+from google_trans_new import google_translator  
+translator = google_translator()  
 load_dotenv()
 apikey="AIzaSyCw9UHFLxolOl9fEBLnwFedqMBC6Sj8nPk"
 os.getenv("GOOGLE_API_KEY")
@@ -93,7 +94,7 @@ def chat_with_pdf():
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
-        user_question=translator.translate(user_question, dest='en').text
+        user_question=translator.translate(user_question,lang_tgt='en') 
     if user_question:
         user_input(user_question,language)
     with st.sidebar:
