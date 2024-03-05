@@ -11,7 +11,9 @@ from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from googletrans import Translator
 from langdetect import detect
-import nltk_utils
+import subprocess
+cmd = ['python3','-m','textblob.download_corpora']
+subprocess.run(cmd)
 from textblob import TextBlob
 from PIL import Image
 import speech_recognition as sr
