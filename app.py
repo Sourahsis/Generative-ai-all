@@ -11,14 +11,9 @@ from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from googletrans import Translator
 from langdetect import detect
-import subprocess
-cmd = ['python3','-m','textblob.download_corpora']
-subprocess.run(cmd)
-from textblob import TextBlob
 from PIL import Image
 import speech_recognition as sr
 import google.generativeai as palm
-import pyttsx3 
 translator = Translator()
 load_dotenv()
 apikey="AIzaSyCw9UHFLxolOl9fEBLnwFedqMBC6Sj8nPk"
@@ -98,9 +93,7 @@ def chat_with_pdf():
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
-        user_question=TextBlob(user_question)
-        if (blob.detect_language() != 'en'):
-          user_question=user_question.translate(to='en')
+        user_question=translator.translate(user_question, dest='en').text
     if user_question:
         user_input(user_question,language)
     with st.sidebar:
