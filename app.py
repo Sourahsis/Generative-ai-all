@@ -11,6 +11,7 @@ from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from googletrans import Translator
 from langdetect import detect
+from textblob import TextBlob
 from PIL import Image
 import speech_recognition as sr
 import google.generativeai as palm
@@ -94,7 +95,9 @@ def chat_with_pdf():
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
-        user_question=translator.translate(user_question, dest='en').text
+        user_question= = TextBlob(language)
+        if (blob.detect_language() != 'en')
+          user_question=.translate(to='en'))
     if user_question:
         user_input(user_question,language)
     with st.sidebar:
