@@ -95,9 +95,9 @@ def chat_with_pdf():
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
-        user_question= = TextBlob(language)
+        user_question=TextBlob(language)
         if (blob.detect_language() != 'en')
-          user_question=.translate(to='en'))
+          user_question=user_question.translate(to='en'))
     if user_question:
         user_input(user_question,language)
     with st.sidebar:
