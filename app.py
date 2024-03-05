@@ -11,12 +11,12 @@ from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from googletrans import Translator
 from langdetect import detect
+import nltk_utils
 from textblob import TextBlob
 from PIL import Image
 import speech_recognition as sr
 import google.generativeai as palm
 import pyttsx3 
-import nltk_utils
 translator = Translator()
 load_dotenv()
 apikey="AIzaSyCw9UHFLxolOl9fEBLnwFedqMBC6Sj8nPk"
