@@ -12,3 +12,4 @@ pillow
 pyttsx3
 SpeechRecognition
 langdetect
+textblob
