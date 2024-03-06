@@ -13,6 +13,7 @@ from googletrans import Translator
 from langdetect import detect
 from PIL import Image
 import speech_recognition as sr
+import google.generativeai as palm
 translator = Translator()
 load_dotenv()
 apikey="AIzaSyCw9UHFLxolOl9fEBLnwFedqMBC6Sj8nPk"
@@ -87,8 +88,8 @@ def detect_language_code(text):
    return language
 
 def chat_with_pdf():
-    st.header("Ask  Question from the PDF Files in any language")
-    user_question = st.text_input("Ask  Question and before that click on the arrow or go to the menu section to upload pdf")
+    st.header("Ask a Question from the PDF Files in eny language")
+    user_question = st.text_input("Ask a Question")
     if(user_question):
         user_question = str(user_question) 
         language=detect_language_code(user_question)
@@ -136,7 +137,7 @@ def input_image_setup(uploaded_file):
 
 
 def chat_with_image():
-    st.header("chat in any language , and the response will be in that language")
+    st.header("chat in any language , and the response will give in that language")
     input=st.text_input("Input Prompt: ",key="input")
     if(input):
         input = str(input) 
@@ -152,9 +153,9 @@ def chat_with_image():
 
 
     input_prompt = """
-                You are an expert in understanding image text.
-                You will receive input images , extract text &
-                you will have to answer questions based on the input image text
+                You are an expert in understanding image.
+                You will receive input images , extract text & take the details of the image
+                you will have to answer questions based on the input image or the image text
                 """
 
     ## If ask button is clicked
@@ -179,8 +180,8 @@ def chatbot():
     ##initialize our streamlit app
 
 
-    st.header("Chatbot")
-    st.write("you can ask in any language you want and i will response in that language")
+    st.header("Chatbot Application")
+    st.write("you can write in any language you want and the bot will response int those language")
     # Initialize session state for chat history if it doesn't exist
     if 'chat_history' not in st.session_state:
         st.session_state['chat_history'] = []
@@ -206,9 +207,48 @@ def chatbot():
     for role, text in st.session_state['chat_history']:
         st.write(f"{role}: {text}")
 
+def assignment_solver():
+    st.header("Assignment Solver")
+    st.write("You can give in any language(try to give it in english), and the bot will try respond in the same language.(max 17 questions in a pdf)")
+
+
+    # Load the Gemini Pro model and initialize the chat (replace with your actual model loading logic)
+    model=genai.GenerativeModel("gemini-pro") 
+    chat = model.start_chat(history=[])
+    def get_gemini_response(question):
+        response=chat.send_message(question,stream=True)
+        return response
+    # Upload PDF files and process text
+    language='en'
+    pdf_docs = st.file_uploader("Upload Your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True)
+    question = "You are an assignment solver. first Detect all the questions in that assignment text and answer them one by one sequentially. The assignment text is:"
+    processed_text = get_pdf_text(pdf_docs)
+    if processed_text:
+        language = detect_language_code(processed_text)
+        processed_text=translator.translate(processed_text, dest='en').text
+       
+    print(processed_text)
+    if st.button("Submit & Process"):
+        question += processed_text
+        st.write("done")
+    # Detect the language
+    else:
+        language = None
+    # Button to submit the user's question
+    print(question)
+    # Get the response from the chatbot and translate it if necessary
+    response = get_gemini_response(question)
+    for chunk in response:
+        translated_response = chunk.text
+        translated_response=str(translated_response) 
+        translated_response=translated_response.replace("*", "") 
+        if language:  # Translate only if not English
+            translated_response=translator.translate(translated_response, dest=language).text
+        st.write(translated_response)
+
 def main():
     st.set_page_config("Chat PDF")
-    page = st.sidebar.selectbox("Menu", ["Chat with pdf", "Chat with image","chatbot"])
+    page = st.sidebar.selectbox("Menu", ["Chat with pdf", "Chat with image","chatbot","assignment solver"])
 
     if page == "Chat with pdf":
         chat_with_pdf()
@@ -216,5 +256,7 @@ def main():
         chat_with_image()
     elif page == "chatbot":
         chatbot()
+    elif page=="assignment solver":
+        assignment_solver()
 if __name__ == "__main__":
     main()
